@@ -62,7 +62,9 @@ def get_products():
     doc = pq(html)
     items = doc('#mainsrp-itemlist .items .item').items()
     for item in items:
-        shop_id = re.search('(\d+)', item.find('.pic .img').attr('id')).group(0)
+        shop_id = re.search('(\d+)', item.find('.pic .img').attr('id').decode('utf-8'))
+        if len(shop_id) > 0:
+            shop_id = shop_id.group(0)
         product = {
             'url': 'https://detail.tmall.com/item.htm?id={id}'.format(id=shop_id),
             'image': item.find('.pic .img').attr('src'),
